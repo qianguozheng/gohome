@@ -1,0 +1,6 @@
+goHome
+---
+
+Standalone website, with only binary format.
+But, it can store data into database, as you can assign SQlite.
+
