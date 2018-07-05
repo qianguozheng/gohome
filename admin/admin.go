@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/labstack/echo"
 )
@@ -27,5 +28,9 @@ func (admin AdminCtx) Handle(c echo.Context) error {
 	fmt.Printf("sessionId:%s\n", cookie.Value)
 	//TODO: judge the cookie Name and Value exist in db
 
-	return c.File("html/admin.html")
+	//return c.File("html/admin.html")
+	return c.Render(http.StatusOK, "admin.html", map[string]interface{}{
+		"name": "ooooooo",
+		"pass": "fuck",
+	})
 }
