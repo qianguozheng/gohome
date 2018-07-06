@@ -10,6 +10,7 @@ import (
 
 	"html/template"
 
+	"./model"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -25,7 +26,7 @@ func main() {
 	e := echo.New()
 
 	render := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("html/admin.html")),
+		templates: template.Must(template.ParseGlob("html/*.html")),
 	}
 	e.Renderer = render
 
@@ -33,6 +34,10 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "time=${time_rfc3339}, method=${method}, uri=${uri}, status=${status}\n",
 	}))
+
+	//Init Database
+	model.Database = model.InitDB("test.db")
+	model.Migrate(model.Database)
 
 	//Homepage
 	homeCtx := admin.NewHomeCtx()
