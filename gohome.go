@@ -35,14 +35,16 @@ func main() {
 		Format: "time=${time_rfc3339}, method=${method}, uri=${uri}, status=${status}\n",
 	}))
 
+	e.Static("/", "static/theme")
+
 	//Init Database
 	model.Database = model.InitDB("test.db")
 	model.Migrate(model.Database)
 
 	//Homepage
 	homeCtx := admin.NewHomeCtx()
-	e.GET("/", homeCtx.Handle)
-	e.GET("/home", homeCtx.Handle)
+	e.GET("/index", homeCtx.Handle)
+	e.GET("/", homeCtx.HandleTheme)
 
 	//Admin Login
 	loginCtx := admin.NewLoginCtx()
@@ -51,6 +53,10 @@ func main() {
 
 	adminCtx := admin.NewAdminCtx()
 	e.GET("/admin/", adminCtx.Handle)
+
+	//Upload file
+	e.GET("/admin/upload", adminCtx.HandleUpload)
+	e.POST("/admin/upload", adminCtx.HandleUpload)
 
 	e.Logger.Fatal(e.Start(*portPtr))
 }
